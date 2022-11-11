@@ -3,12 +3,14 @@
 // #include <GL/gl.h>
 // #include <GL/glu.h>
 // #include <stdio.h>
-#include <GL/gl.h>
+//#include <GL/gl.h>
 #include <iostream>
 #include <SDL2/SDL.h>
 
 #include "Screen.h"
 #include "Input.h"
+#include "glad.h"
+
 
 bool isAppRunning = true;
 
@@ -48,24 +50,22 @@ int main(int agrc, char **argv)
         isAppRunning = !Input::Instance()->IsXClicked();
 
         char keyPressed = Input::Instance()->GetKeyDown();
+        
+        // Direction keys
         if(keyPressed == 'a')
         {
-            std::cout << "\'a\' key pressed" << std::endl;
             xPos -= 0.01f;
         }
         else if(keyPressed == 'd')
         {
-            std::cout << "\'a\' key pressed" << std::endl;
             xPos += 0.01f;
         }        
         else if(keyPressed == 'w')
         {
-            std::cout << "\'a\' key pressed" << std::endl;
             yPos += 0.01f;
         }        
         else if(keyPressed == 's')
         {
-            std::cout << "\'a\' key pressed" << std::endl;
             yPos -= 0.01f;
         }
         

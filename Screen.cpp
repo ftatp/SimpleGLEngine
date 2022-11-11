@@ -1,7 +1,7 @@
-#include <GL/gl.h>
 #include <iostream>
 
 #include "Screen.h"
+#include "glad.h"
 
 Screen* Screen::Instance()
 {
@@ -40,7 +40,11 @@ bool Screen::Initialize()
         return false;
     }
 
-   return true;
+
+    if(!gladLoadGL()){
+        std::cout << "Glad load error" << std::endl;
+    }
+    return true;
 }
 
 void Screen::ClearScreen()
