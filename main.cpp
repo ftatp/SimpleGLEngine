@@ -1,15 +1,10 @@
-// //#include <GL/glut.h>
-// #include <GL/glew.h>
-// #include <GL/gl.h>
-// #include <GL/glu.h>
-// #include <stdio.h>
-//#include <GL/gl.h>
 #include <iostream>
 #include <SDL2/SDL.h>
 
 #include "Screen.h"
 #include "Input.h"
 #include "glad.h"
+#include "Shader.h"
 
 
 bool isAppRunning = true;
@@ -37,6 +32,25 @@ int main(int agrc, char **argv)
 //     
 
     Screen::Instance()->Initialize();
+
+    if(!Shader::Instance()->CreateProgram())
+    {
+        return 0;
+    }
+
+    if(!Shader::Instance()->CreateShaders())
+    {
+        return 0;
+    }
+
+    if(!Shader::Instance()->CompileShaders("Shaders/Main.vert", Shader::ShaderType::VERTEX_SHADER))
+    {}
+    if(!Shader::Instance()->CompileShaders("Shaders/Main.frag", Shader::ShaderType::FRAGMENT_SHADER))
+    {}
+
+    Shader::Instance()->AttachShaders();
+    if(!Shader::Instance()->LinkProgram())
+    {}
 
     float xPos = 0.0f;
     float yPos = 0.0f;
@@ -78,12 +92,15 @@ int main(int agrc, char **argv)
         int mouseX = Input::Instance()->GetMousePositionX();
         int mouseY = Input::Instance()->GetMousePositionY();
 
-        std::cout << "Mouse position : " << mouseX << ", " << mouseY << std::endl;
+        //std::cout << "Mouse position : " << mouseX << ", " << mouseY << std::endl;
 
         MyDisplay(xPos, yPos);
         Screen::Instance()->Present();
     }
 
+    Shader::Instance()->DetachShaders();
+    Shader::Instance()->DestroyShaders();
+    Shader::Instance()->DestroyProgram();
     Screen::Instance()->Shutdown();
 
     return 0;

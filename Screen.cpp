@@ -42,8 +42,9 @@ bool Screen::Initialize()
 
 
     if(!gladLoadGL()){
-        std::cout << "Glad load error" << std::endl;
+        std::cout << "Glad loading error" << std::endl;
     }
+
     return true;
 }
 
