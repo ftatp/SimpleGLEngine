@@ -2,7 +2,10 @@
 
 uniform bool isLit;
 
+in vec3 colorOut;
+out vec4 fragColor;
+
 void main()
 {
-    //TODO:
+    fragColor = vec4(colorOut, 1.0f);    
 }

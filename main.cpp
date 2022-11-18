@@ -9,6 +9,23 @@
 
 bool isAppRunning = true;
 
+GLfloat vertices[] = {
+    -0.5f,  0.5f, 0.0f, // Left, Up
+     0.5f,  0.5f, 0.0f, // Right, Up
+    -0.5f, -0.5f, 0.0f, // Left, Down
+    -0.5f, -0.5f, 0.0f, // Left, Down
+     0.5f,  0.5f, 0.0f, // Right, Up
+     0.5f, -0.5f, 0.0f // Right, Down
+};
+
+GLfloat colors[] = {
+    1.0f, 0.0f, 0.0f,
+    0.0f, 0.0f, 1.0f,
+    0.0f, 1.0f, 1.0f,
+    0.0f, 1.0f, 1.0f,
+    0.0f, 0.0f, 1.0f,
+    0.0f, 1.0f, 0.0f
+};
 
 void MyDisplay(float xPos, float yPos){
     glClear(GL_COLOR_BUFFER_BIT);
@@ -55,10 +72,40 @@ int main(int agrc, char **argv)
     float xPos = 0.0f;
     float yPos = 0.0f;
 
-    if(!Shader::Instance()->SendUniformData("time", 20))
-    {
+    // if(!Shader::Instance()->SendUniformData("time", 20))
+    // {
 
-    }
+    // }
+
+    GLuint shaderProgramID = Shader::Instance()->GetShaderProgramID();
+    GLint vertexID = glGetAttribLocation(shaderProgramID, "vertexIn");
+    GLint colorID = glGetAttribLocation(shaderProgramID, "colorIn");
+
+    GLuint vertexVBO;
+    GLuint colorVBO;
+    glGenBuffers(1, &vertexVBO);
+    glGenBuffers(1, &colorVBO);
+
+    GLuint VAO;
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO); 
+
+        // Bind generated buffer with graphic card's buffer binding point GL_ARRAY_BUFFER.
+        glBindBuffer(GL_ARRAY_BUFFER, vertexVBO);
+        // Set the graphic card's buffer binding point GL_ARRAY_BUFFER with data (pointer).
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+        // Link the shader attribute with GL_ARRAY_BUFFER binded target and define the structure of attribute
+        glVertexAttribPointer(vertexID, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+        // Enable the attribute
+        glEnableVertexAttribArray(vertexID);
+
+        glBindBuffer(GL_ARRAY_BUFFER, colorVBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
+        glVertexAttribPointer(colorID, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+        glEnableVertexAttribArray(colorID);
+
+    glBindVertexArray(0);
+
 
     while(isAppRunning)
     {
@@ -99,9 +146,20 @@ int main(int agrc, char **argv)
 
         //std::cout << "Mouse position : " << mouseX << ", " << mouseY << std::endl;
 
-        MyDisplay(xPos, yPos);
+        glBindVertexArray(VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glBindVertexArray(0);
+
+        //MyDisplay(xPos, yPos);
         Screen::Instance()->Present();
     }
+
+    glDeleteBuffers(1, &vertexVBO);
+    glDeleteBuffers(1, &colorVBO);
+    glDeleteVertexArrays(1, &VAO);
+
+    glDisableVertexAttribArray(vertexID);
+    glDisableVertexAttribArray(colorID);
 
     Shader::Instance()->DetachShaders();
     Shader::Instance()->DestroyShaders();

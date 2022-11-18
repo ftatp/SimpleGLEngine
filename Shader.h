@@ -13,6 +13,8 @@ public:
     static Shader* Instance();
 
 public: 
+    GLuint GetShaderProgramID();
+
     bool CreateProgram();
     bool CreateShaders();
 

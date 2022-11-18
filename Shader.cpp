@@ -9,6 +9,11 @@ Shader* Shader::Instance()
     return shaderObject;
 }
 
+GLuint Shader::GetShaderProgramID()
+{
+    return m_shaderProgramID;
+}
+
 bool Shader::CreateProgram()
 {
     m_shaderProgramID = glCreateProgram();
