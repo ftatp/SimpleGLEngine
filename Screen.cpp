@@ -50,7 +50,6 @@ bool Screen::Initialize()
 
 void Screen::ClearScreen()
 {
-
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
