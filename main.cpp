@@ -1,15 +1,17 @@
 #include <iostream>
 #include <SDL2/SDL.h>
+#include <glm/glm.hpp>
 
 #include "Screen.h"
 #include "Input.h"
 #include "glad.h"
 #include "Shader.h"
 
+#include "Camera.h"
 #include "Quad.h"
-#include <glm/glm.hpp>
 
 bool isAppRunning = true;
+
 void MyDisplay(float xPos, float yPos){
     glClear(GL_COLOR_BUFFER_BIT);
     glBegin(GL_POLYGON);
@@ -20,8 +22,6 @@ void MyDisplay(float xPos, float yPos){
     glEnd();
     glFlush();  
 }
-
-
 
 int main(int agrc, char **argv)
 {
@@ -49,6 +49,8 @@ int main(int agrc, char **argv)
     float xPos = 0.0f;
     float yPos = 0.0f;
 
+    Camera camera;
+
     // if(!Shader::Instance()->SendUniformData("time", 20))
     // {
 
@@ -61,7 +63,6 @@ int main(int agrc, char **argv)
         Screen::Instance()->ClearScreen();
         Input::Instance()->Update();
 
-        char keyPressed = Input::Instance()->GetKeyDown();
         isAppRunning = !Input::Instance()->IsXClicked();
 
         if(Input::Instance()->IsLeftButtonClicked())
@@ -74,7 +75,7 @@ int main(int agrc, char **argv)
 
         //std::cout << "Mouse position : " << mouseX << ", " << mouseY << std::endl;
 
-        //MyDisplay(xPos, yPos);
+        camera.Update();
         quad.Update();
         quad.Render();
         Screen::Instance()->Present();

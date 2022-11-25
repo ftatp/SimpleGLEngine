@@ -226,6 +226,7 @@ bool Shader::SendUniformData(const std::string& uniformName, const glm::mat4& da
         std::cout << "Shader Variable " << uniformName << " not found or used." << std::endl;
         return false;
     }
+    
     glUniformMatrix4fv(ID, 1, GL_FALSE, &data[0][0]);
 
     return false;

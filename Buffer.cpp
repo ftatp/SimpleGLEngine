@@ -60,6 +60,35 @@ void Buffer::LinkBuffer(const std::string& attribute, VBOType vboType, Component
     glBindVertexArray(0); 
 }
 
+void Buffer::CreateAndLinkVBO(VBOType vboType, GLfloat* data, GLsizeiptr bufferSize, FillType fillType,
+                            const std::string& attribute, ComponentType componentType, DataType dataType)
+{
+
+    GLuint shaderProgramID = Shader::Instance()->GetShaderProgramID();
+    GLint ID = glGetAttribLocation(shaderProgramID, attribute.c_str());
+
+    glBindVertexArray(m_VAO); 
+
+    // Bind generated buffer with graphic card's buffer binding point GL_ARRAY_BUFFER.
+    if(vboType == VERTEX_BUFFER)
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, m_vertexVBO);
+    }
+    else
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, m_colorVBO);
+    }
+
+    // Set the graphic card's buffer binding point GL_ARRAY_BUFFER with data (pointer).
+    glBufferData(GL_ARRAY_BUFFER, bufferSize, data, fillType);
+
+    // Link the shader attribute with GL_ARRAY_BUFFER binded target and define the structure of attribute
+    glVertexAttribPointer(ID, componentType, GL_FLOAT, GL_FALSE, 0, nullptr);
+    // Enable the attribute
+    glEnableVertexAttribArray(ID);
+    glBindVertexArray(0);
+}
+
 void Buffer::Render(DrawType drawType)
 {
     glBindVertexArray(m_VAO);

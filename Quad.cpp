@@ -5,32 +5,41 @@
 
 #include <iostream> 
 
+GLfloat defaultVertices[] = {
+    // Triangle 1
+    -0.5f,  0.5f, 0.0f, // Left, Up
+        0.5f,  0.5f, 0.0f, // Right, Up
+    -0.5f, -0.5f, 0.0f, // Left, Down
+    // Triangle 2
+    -0.5f, -0.5f, 0.0f, // Left, Down
+        0.5f,  0.5f, 0.0f, // Right, Up
+        0.5f, -0.5f, 0.0f // Right, Down
+};
+
+GLfloat defaultColors[] = {
+    1.0f, 0.0f, 0.0f,
+    0.0f, 0.0f, 1.0f,
+    0.0f, 1.0f, 1.0f,
+    0.0f, 1.0f, 1.0f,
+    0.0f, 0.0f, 1.0f,
+    0.0f, 1.0f, 0.0f
+};
+
 Quad::Quad()
 {
-    GLfloat vertices[] = {
-        -0.5f,  0.5f, 0.0f, // Left, Up
-         0.5f,  0.5f, 0.0f, // Right, Up
-        -0.5f, -0.5f, 0.0f, // Left, Down
-        -0.5f, -0.5f, 0.0f, // Left, Down
-         0.5f,  0.5f, 0.0f, // Right, Up
-         0.5f, -0.5f, 0.0f // Right, Down
-    };
-
-    GLfloat colors[] = {
-        1.0f, 0.0f, 0.0f,
-        0.0f, 0.0f, 1.0f,
-        0.0f, 1.0f, 1.0f,
-        0.0f, 1.0f, 1.0f,
-        0.0f, 0.0f, 1.0f,
-        0.0f, 1.0f, 0.0f
-    };
 
     m_buffer.CreateBuffer(6);
-    m_buffer.FillVBO(Buffer::VERTEX_BUFFER, vertices, sizeof(vertices), Buffer::SINGLE);
-    m_buffer.FillVBO(Buffer::COLOR_BUFFER, colors, sizeof(colors), Buffer::SINGLE);
+    // m_buffer.FillVBO(Buffer::VERTEX_BUFFER, defaultVertices, sizeof(defaultVertices), Buffer::SINGLE);
+    // m_buffer.LinkBuffer("vertexIn", Buffer::VERTEX_BUFFER, Buffer::XYZ, Buffer::FLOAT);
 
-    m_buffer.LinkBuffer("vertexIn", Buffer::VERTEX_BUFFER, Buffer::XYZ, Buffer::FLOAT);
-    m_buffer.LinkBuffer("colorIn", Buffer::COLOR_BUFFER, Buffer::RGB, Buffer::FLOAT);
+    // m_buffer.FillVBO(Buffer::COLOR_BUFFER, defaultColors, sizeof(defaultColors), Buffer::SINGLE);
+    // m_buffer.LinkBuffer("colorIn", Buffer::COLOR_BUFFER, Buffer::RGB, Buffer::FLOAT);
+
+
+    m_buffer.CreateAndLinkVBO(Buffer::VERTEX_BUFFER, defaultVertices, sizeof(defaultVertices), Buffer::SINGLE,
+                                "vertexIn", Buffer::XYZ, Buffer::FLOAT);
+    m_buffer.CreateAndLinkVBO(Buffer::COLOR_BUFFER, defaultColors, sizeof(defaultColors), Buffer::SINGLE,
+                                "colorIn", Buffer::RGB, Buffer::FLOAT);
 
     m_position = glm::vec3(0.0f);
 }
@@ -44,20 +53,29 @@ void Quad::Update()
 {
     if(Input::Instance()->IsKeyPressed())
     {
+        char pressedKey = Input::Instance()->GetKeyDown();
         // Direction keys
-        if(Input::Instance()->GetKeyDown() == 'a')
+        if(pressedKey == 'j')
         {
             m_position.x -= 0.01f;
         }
-        else if(Input::Instance()->GetKeyDown() == 'd')
+        else if(pressedKey == 'l')
         {
             m_position.x += 0.01f;
         }        
-        else if(Input::Instance()->GetKeyDown() == 'w')
+        else if(pressedKey == 'i')
+        {
+            m_position.z += 0.01f;
+        }
+        else if(pressedKey == 'k')
+        {
+            m_position.z -= 0.01f;
+        }
+        else if(pressedKey == 'u')
         {
             m_position.y += 0.01f;
         }        
-        else if(Input::Instance()->GetKeyDown() == 's')
+        else if(pressedKey == 'o')
         {
             m_position.y -= 0.01f;
         }

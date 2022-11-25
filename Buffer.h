@@ -20,6 +20,8 @@ public:
     void CreateBuffer(GLuint totalVertices);
     void FillVBO(VBOType vboType, GLfloat* data, GLsizeiptr bufferSize, FillType fillType);
     void LinkBuffer(const std::string& attribute, VBOType vboType, ComponentType ComponentType, DataType dataType);
+    void CreateAndLinkVBO(VBOType vboType, GLfloat* data, GLsizeiptr bufferSize, FillType fillType, const std::string& attribute, ComponentType componentType, DataType dataType);
+    
     void Render(DrawType drawtype);
     void DestroyBuffer();
 
