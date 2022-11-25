@@ -43,7 +43,7 @@ void Buffer::LinkBuffer(const std::string& attribute, VBOType vboType, Component
     GLint ID = glGetAttribLocation(shaderProgramID, attribute.c_str());
     
     glBindVertexArray(m_VAO); 
-    // Bind generated buffer with graphic card's buffer binding point GL_ARRAY_BUFFER.
+    //Bind generated buffer with graphic card's buffer binding point GL_ARRAY_BUFFER.
     if(vboType == VERTEX_BUFFER)
     {
         glBindBuffer(GL_ARRAY_BUFFER, m_vertexVBO);

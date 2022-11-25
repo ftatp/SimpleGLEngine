@@ -7,6 +7,7 @@
 #include "Shader.h"
 
 #include "Quad.h"
+#include <glm/glm.hpp>
 
 bool isAppRunning = true;
 void MyDisplay(float xPos, float yPos){
@@ -60,30 +61,9 @@ int main(int agrc, char **argv)
         Screen::Instance()->ClearScreen();
         Input::Instance()->Update();
 
-
+        char keyPressed = Input::Instance()->GetKeyDown();
         isAppRunning = !Input::Instance()->IsXClicked();
 
-        char keyPressed = Input::Instance()->GetKeyDown();
-        
-        // Direction keys
-        if(keyPressed == 'a')
-        {
-            xPos -= 0.01f;
-        }
-        else if(keyPressed == 'd')
-        {
-            xPos += 0.01f;
-        }        
-        else if(keyPressed == 'w')
-        {
-            yPos += 0.01f;
-        }        
-        else if(keyPressed == 's')
-        {
-            yPos -= 0.01f;
-        }
-        
-        
         if(Input::Instance()->IsLeftButtonClicked())
         {
             std::cout << "Left mouse button clicked" << std::endl;
@@ -95,6 +75,7 @@ int main(int agrc, char **argv)
         //std::cout << "Mouse position : " << mouseX << ", " << mouseY << std::endl;
 
         //MyDisplay(xPos, yPos);
+        quad.Update();
         quad.Render();
         Screen::Instance()->Present();
     }
