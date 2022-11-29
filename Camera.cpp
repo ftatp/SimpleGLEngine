@@ -14,6 +14,11 @@ Camera::Camera()
 
 void Camera::Update()
 {
+
+    int mouseMotionX = Input::Instance()->GetMouseMotionX();
+    int mouseMotionY = Input::Instance()->GetMouseMotionY();
+
+
     if(Input::Instance()->IsKeyPressed())
     {
         char pressedKey = Input::Instance()->GetKeyDown();
@@ -43,7 +48,16 @@ void Camera::Update()
             m_position.y -= 0.01f;
         }
     }
-
+    m_direction += 0.01f * mouseMotionY;
     m_view = glm::lookAt(m_position, m_position + m_direction, m_up);
     Shader::Instance()->SendUniformData("view", m_view);
+}
+
+void Camera::Set3DView()
+{
+    GLfloat fov = 45.0f;
+    GLfloat aspectRatio = 1280.0f/720.0f; 
+   
+    m_proj = glm::perspective(fov, aspectRatio, 0.001f, 1000.0f);
+    Shader::Instance()->SendUniformData("proj", m_proj);
 }

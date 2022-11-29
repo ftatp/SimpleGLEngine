@@ -49,14 +49,13 @@ int main(int agrc, char **argv)
     float xPos = 0.0f;
     float yPos = 0.0f;
 
+    Quad quad;
     Camera camera;
-
+    camera.Set3DView();
     // if(!Shader::Instance()->SendUniformData("time", 20))
     // {
 
     // }
-
-    Quad quad;
 
     while(isAppRunning)
     {
@@ -73,7 +72,7 @@ int main(int agrc, char **argv)
         int mouseX = Input::Instance()->GetMousePositionX();
         int mouseY = Input::Instance()->GetMousePositionY();
 
-        //std::cout << "Mouse position : " << mouseX << ", " << mouseY << std::endl;
+        //std::cout << "Mouse position : " << mouseMotionX << ", " << mouseMotionY << std::endl;
 
         camera.Update();
         quad.Update();
