@@ -25,6 +25,16 @@ GLfloat defaultColors[] = {
     0.0f, 1.0f, 0.0f
 };
 
+GLfloat defaultUVs[] = {
+    0.0f, 1.0f,
+    1.0f, 1.0f,
+    0.0f, 0.0f,
+    
+    0.0f, 0.0f,
+    1.0f, 1.0f,
+    1.0f, 0.0f
+};
+
 Quad::Quad()
 {
 
@@ -40,7 +50,10 @@ Quad::Quad()
                                 "vertexIn", Buffer::XYZ, Buffer::FLOAT);
     m_buffer.CreateAndLinkVBO(Buffer::COLOR_BUFFER, defaultColors, sizeof(defaultColors), Buffer::SINGLE,
                                 "colorIn", Buffer::RGB, Buffer::FLOAT);
+    m_buffer.CreateAndLinkVBO(Buffer::TEXTURE_BUFFER, defaultUVs, sizeof(defaultUVs), Buffer::SINGLE,
+                                "textureIn", Buffer::UV, Buffer::FLOAT);
 
+    m_texture.Load("Textures/texture.jpg");
     m_position = glm::vec3(0.0f);
 }
 
@@ -92,7 +105,10 @@ void Quad::Render()
     //std::cout << m_model. << std::endl;
 
     Shader::Instance()->SendUniformData("model", m_model);
+
+    m_texture.Bind();
     m_buffer.Render(Buffer::TRIANGLES);
+    m_texture.Unbind();
 }
 
 

@@ -6,6 +6,7 @@ Buffer::Buffer()
     m_VAO = 0;
     m_vertexVBO = 0;
     m_colorVBO = 0;
+    m_textureVBO = 0;
     m_totalVertices = 0;
 }
 
@@ -13,6 +14,7 @@ void Buffer::CreateBuffer(GLuint totalVertices)
 {
     glGenBuffers(1, &m_vertexVBO);
     glGenBuffers(1, &m_colorVBO);
+    glGenBuffers(1, &m_textureVBO);
     glGenVertexArrays(1, &m_VAO);
     m_totalVertices = totalVertices;
 }
@@ -26,11 +28,15 @@ void Buffer::FillVBO(VBOType vboType, GLfloat* data, GLsizeiptr bufferSize, Fill
     {
         glBindBuffer(GL_ARRAY_BUFFER, m_vertexVBO);
     }
-    else
+    else if(vboType == COLOR_BUFFER)
     {
         glBindBuffer(GL_ARRAY_BUFFER, m_colorVBO);
     }
-
+    else
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, m_textureVBO);
+    }
+    
     // Set the graphic card's buffer binding point GL_ARRAY_BUFFER with data (pointer).
     glBufferData(GL_ARRAY_BUFFER, bufferSize, data, fillType);
     glBindVertexArray(0);
@@ -48,9 +54,13 @@ void Buffer::LinkBuffer(const std::string& attribute, VBOType vboType, Component
     {
         glBindBuffer(GL_ARRAY_BUFFER, m_vertexVBO);
     }
-    else
+    else if(vboType == COLOR_BUFFER)
     {
         glBindBuffer(GL_ARRAY_BUFFER, m_colorVBO);
+    }
+    else
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, m_textureVBO);
     }
 
     // Link the shader attribute with GL_ARRAY_BUFFER binded target and define the structure of attribute
@@ -74,9 +84,13 @@ void Buffer::CreateAndLinkVBO(VBOType vboType, GLfloat* data, GLsizeiptr bufferS
     {
         glBindBuffer(GL_ARRAY_BUFFER, m_vertexVBO);
     }
-    else
+    else if(vboType == COLOR_BUFFER)
     {
         glBindBuffer(GL_ARRAY_BUFFER, m_colorVBO);
+    }
+    else
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, m_textureVBO);
     }
 
     // Set the graphic card's buffer binding point GL_ARRAY_BUFFER with data (pointer).
@@ -100,5 +114,6 @@ void Buffer::DestroyBuffer()
 {
     glDeleteBuffers(1, &m_vertexVBO);
     glDeleteBuffers(1, &m_colorVBO);
+    glDeleteBuffers(1, &m_textureVBO);
     glDeleteVertexArrays(1, &m_VAO);
 }
